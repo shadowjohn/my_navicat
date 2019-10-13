@@ -230,6 +230,7 @@ namespace my_navicat
                 case "user":
                     user_btn.BackColor = Color.LightBlue;
                     user_btn.Checked = true;
+
                     break;
                 case "table":
                     table_btn.BackColor = Color.LightBlue;                    
