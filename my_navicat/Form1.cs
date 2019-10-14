@@ -10,7 +10,8 @@ using System.Windows.Forms;
 using my_navicat.entity;
 using utility;
 using System.Runtime.InteropServices;
-using MySql.Data.MySqlClient;
+//using MySql.Data.MySqlClient;
+using my_navicat.lib;
 
 namespace my_navicat
 {
@@ -342,11 +343,11 @@ namespace my_navicat
                         string SQL = @"
                             show tables from `" + databaseName + @"`
                         ";
-                        MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[father_index]["pdo"]));
-                        DataTable dt = new DataTable();
+                        //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[father_index]["pdo"]));
+                        DataTable dt = ((my_mysql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
                         //List<MySqlParameter> PA = new List<MySqlParameter>();
                         //cmd.Parameters.AddWithValue("@table", databaseName);
-                        dt.Load(cmd.ExecuteReader());
+                        //dt.Load(cmd.ExecuteReader());
                         for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
                         {
                             TreeNode tN = new TreeNode(dt.Rows[i]["Tables_in_" + databaseName].ToString());
@@ -489,14 +490,15 @@ namespace my_navicat
                             "port=" + myN.connections[index]["port"].ToString() + ";" +
                             "user id=" + myN.connections[index]["login_id"].ToString() + ";" +
                             "Password=" + myN.connections[index]["pwd"].ToString() + ";" +
-                            "database=;sslmode=none;charset=utf8;";
-                        myN.connections[index]["pdo"] = new MySqlConnection();
-                        ((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
-                        if (((MySqlConnection)myN.connections[index]["pdo"]).State != ConnectionState.Open)
+                            "database=;sslmode=none;charset=utf8;";                        
+                        myN.connections[index]["pdo"] = new my_mysql();
+                        //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
+                        ((my_mysql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
+                        if (((my_mysql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
                         {
                             try
                             {
-                                ((MySqlConnection)myN.connections[index]["pdo"]).Open();
+                                ((my_mysql)myN.connections[index]["pdo"]).open();
                                 myN.connections[index]["isConnect"] = "T";
                                 db_tree.Nodes[index].SelectedImageIndex = 1;
                                 db_tree.Nodes[index].ImageIndex = 1;
@@ -504,9 +506,9 @@ namespace my_navicat
                                 string SQL = @"
                                     show databases;
                                 ";
-                                MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
-                                DataTable dt = new DataTable();
-                                dt.Load(cmd.ExecuteReader());
+                                //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
+                                DataTable dt = ((my_mysql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                                //dt.Load(cmd.ExecuteReader());
                                 for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
                                 {
                                     TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
@@ -527,6 +529,54 @@ namespace my_navicat
 
                         }
                        
+                        break;
+                    case "mssql":
+                    case "sqlserver":
+                        myN.connections[index]["connString"] = "Data Source=" + myN.connections[index]["ip"].ToString()+ ","+ myN.connections[index]["port"].ToString() +"; " +
+                            // + "," + myN.connections[index]["port"].ToString() + "
+                            "Integrated Security=True;" +
+                            "Initial Catalog=master;" +
+                            "User ID=" + myN.connections[index]["login_id"].ToString() + ";" +
+                            "Password=" + myN.connections[index]["pwd"].ToString() + "";
+                        Console.WriteLine(myN.connections[index]["connString"]);
+                        myN.connections[index]["pdo"] = new my_mssql();
+                        //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
+                        ((my_mssql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
+                        if (((my_mssql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
+                        {
+                            try
+                            {
+                                ((my_mssql)myN.connections[index]["pdo"]).open();
+                                myN.connections[index]["isConnect"] = "T";
+                                db_tree.Nodes[index].SelectedImageIndex = 1;
+                                db_tree.Nodes[index].ImageIndex = 1;
+                                //取得 databases 列表
+                                string SQL = @"
+                                  select [name] as [Database] from sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')
+                                ";
+                                //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
+                                DataTable dt = ((my_mssql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                                //dt.Load(cmd.ExecuteReader());
+                                for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
+                                {
+                                    TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
+                                    newNode.ImageIndex = 10;
+                                    newNode.SelectedImageIndex = 10;
+                                    db_tree.Nodes[index].Nodes.Add(newNode);
+                                }
+                                ((TreeView)sender).SelectedNode.ExpandAll();
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                                myN.connections[index]["isConnect"] = "F";
+                                //db_tree.Nodes[index].ImageIndex = 0;
+                                //db_tree.Nodes[index].SelectedImageIndex = 0;                                
+                                ((TreeView)sender).SelectedNode.Collapse();
+                            }
+
+                        }
+
                         break;
                 }
                 
@@ -558,6 +608,11 @@ namespace my_navicat
         private void user_btn_Click(object sender, EventArgs e)
         {
             thirty_two_change("user");
+        }
+
+        private void tool_Connection_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

@@ -247,6 +247,7 @@
             this.tool_Connection.Size = new System.Drawing.Size(1232, 73);
             this.tool_Connection.TabIndex = 0;
             this.tool_Connection.Text = "Table";
+            this.tool_Connection.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tool_Connection_ItemClicked);
             // 
             // connection_btn
             // 
