@@ -17,6 +17,9 @@ namespace my_navicat
 
     public partial class Form1 : Form
     {
+        public Form dialog = new Form();
+        public Label dialogLabel = new Label();
+        public int dialogFlag = 0;
         Dictionary<string, List<object>> displayTools = new Dictionary<string, List<object>>();
         navicat_main myN = new navicat_main();
         myinclude my = new myinclude();
@@ -393,22 +396,58 @@ namespace my_navicat
         private void db_tree_third_click(int father_index, int index, string databaseName, string name)
         {
             MessageBox.Show(father_index + "," + index + "," + name);
+        }       
+        public void dialogMyBoxOn(string message,bool can_close)
+        {
+            /*
+            var w = new Form() { Size = new Size(0, 0) };
+            (new System.Threading.Thread(CloseIt)).Start();
+            MessageBox.Show("HI");
+            MessageBox.Show(w, "Wait...", "載入中...");
+            */
+            dialog.Size = new Size(250, 80);
+            dialog.MaximizeBox = false;
+            dialog.MinimizeBox = false;
+            dialog.AutoSize = true;
+            dialog.ControlBox = false;
+            dialog.FormBorderStyle = FormBorderStyle.FixedSingle;            
+            dialog.StartPosition = FormStartPosition.CenterScreen;
+            
+            dialogLabel.Location = new Point(0, 0);
+            dialogLabel.AutoSize = false;
+            dialogLabel.Size = new Size(250, 80);
+            dialogLabel.TextAlign = ContentAlignment.MiddleCenter;
+            dialogLabel.Text = message;
+            dialogLabel.Font = new Font("Arial", 18, FontStyle.Bold);
+            dialog.Controls.Add(dialogLabel);
+            dialog.TopMost = true;
+            dialog.Show();
+        }
+        public void dialogMyBoxOff()
+        {
+            dialog.Controls.Remove(dialogLabel);
+            dialog.Hide();
         }
         private void db_tree_DoubleClick(object sender, EventArgs e)
         {
+            
+            dialogMyBoxOn("資料載入中...",false);
             int index = ((TreeView)sender).SelectedNode.Index;
             bool is_root = true;
             //Console.WriteLine(((TreeView)sender).SelectedNode.FullPath);
             string fullPath = ((TreeView)sender).SelectedNode.FullPath;
             var m = my.explode("\\", fullPath);
+            
             if (m.Length == 2)
             {
                 //代表是子層
+                
                 db_tree_second_click(
                     ((TreeView)sender).SelectedNode.Parent.Index,
                     ((TreeView)sender).SelectedNode.Index,
                     ((TreeView)sender).SelectedNode.Text
                     );
+                dialogMyBoxOff();
                 return;
             }
             if (m.Length == 3)
@@ -419,6 +458,7 @@ namespace my_navicat
                     ((TreeView)sender).SelectedNode.Parent.Index,
                     ((TreeView)sender).SelectedNode.Parent.Text,
                     ((TreeView)sender).SelectedNode.Text);
+                dialogMyBoxOff();
                 return;
             }
             var db = myN.connections[index];
@@ -486,11 +526,12 @@ namespace my_navicat
                             }
 
                         }
-
+                       
                         break;
                 }
+                
             }
-
+            dialogMyBoxOff();
         }
 
         private void label1_Click(object sender, EventArgs e)

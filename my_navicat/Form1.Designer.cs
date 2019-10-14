@@ -45,16 +45,6 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tool_Connection = new System.Windows.Forms.ToolStrip();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.db_tree = new System.Windows.Forms.TreeView();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
-            this.label1 = new System.Windows.Forms.Label();
-            this.mTs = new System.Windows.Forms.ToolStrip();
-            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
-            this.table_top = new System.Windows.Forms.DataGridView();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.connection_btn = new System.Windows.Forms.ToolStripDropDownButton();
             this.mysqlStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.postgreSQLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,8 +52,13 @@
             this.sQLiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sQLServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.user_btn = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.table_btn = new System.Windows.Forms.ToolStripButton();
             this.view_btn = new System.Windows.Forms.ToolStripButton();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
+            this.mTs = new System.Windows.Forms.ToolStrip();
             this.OpenTable = new System.Windows.Forms.ToolStripButton();
             this.DesignTable = new System.Windows.Forms.ToolStripButton();
             this.NewTable = new System.Windows.Forms.ToolStripButton();
@@ -79,6 +74,11 @@
             this.NewFunction = new System.Windows.Forms.ToolStripButton();
             this.DeleteFunction = new System.Windows.Forms.ToolStripButton();
             this.ExecuteFunction = new System.Windows.Forms.ToolStripButton();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.db_tree = new System.Windows.Forms.TreeView();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.table_top = new System.Windows.Forms.DataGridView();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -89,15 +89,15 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
-            this.splitContainer3.Panel1.SuspendLayout();
-            this.splitContainer3.Panel2.SuspendLayout();
-            this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).BeginInit();
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
             this.mTs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
             this.splitContainer5.SuspendLayout();
@@ -248,146 +248,6 @@
             this.tool_Connection.TabIndex = 0;
             this.tool_Connection.Text = "Table";
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.IsSplitterFixed = true;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.splitContainer4);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
-            this.splitContainer2.Size = new System.Drawing.Size(1232, 591);
-            this.splitContainer2.SplitterDistance = 25;
-            this.splitContainer2.TabIndex = 0;
-            // 
-            // splitContainer3
-            // 
-            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer3.Name = "splitContainer3";
-            // 
-            // splitContainer3.Panel1
-            // 
-            this.splitContainer3.Panel1.Controls.Add(this.db_tree);
-            this.splitContainer3.Panel1.Resize += new System.EventHandler(this.splitContainer3_Panel1_Resize);
-            // 
-            // splitContainer3.Panel2
-            // 
-            this.splitContainer3.Panel2.Controls.Add(this.splitContainer5);
-            this.splitContainer3.Size = new System.Drawing.Size(1232, 562);
-            this.splitContainer3.SplitterDistance = 267;
-            this.splitContainer3.TabIndex = 0;
-            // 
-            // db_tree
-            // 
-            this.db_tree.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.db_tree.Location = new System.Drawing.Point(0, 0);
-            this.db_tree.Name = "db_tree";
-            this.db_tree.Size = new System.Drawing.Size(121, 97);
-            this.db_tree.TabIndex = 0;
-            this.db_tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.db_tree_AfterSelect);
-            this.db_tree.DoubleClick += new System.EventHandler(this.db_tree_DoubleClick);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 677);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1232, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // splitContainer4
-            // 
-            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer4.Name = "splitContainer4";
-            // 
-            // splitContainer4.Panel1
-            // 
-            this.splitContainer4.Panel1.Controls.Add(this.label1);
-            // 
-            // splitContainer4.Panel2
-            // 
-            this.splitContainer4.Panel2.Controls.Add(this.mTs);
-            this.splitContainer4.Size = new System.Drawing.Size(1232, 25);
-            this.splitContainer4.SplitterDistance = 268;
-            this.splitContainer4.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 7);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(63, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Connections";
-            // 
-            // mTs
-            // 
-            this.mTs.AllowMerge = false;
-            this.mTs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.OpenTable,
-            this.DesignTable,
-            this.NewTable,
-            this.DeleteTable,
-            this.ImportWizard,
-            this.ExportWizard,
-            this.OpenView,
-            this.DesignView,
-            this.NewView,
-            this.DeleteView,
-            this.View_ExportWizard,
-            this.DesignFunction,
-            this.NewFunction,
-            this.DeleteFunction,
-            this.ExecuteFunction});
-            this.mTs.Location = new System.Drawing.Point(0, 0);
-            this.mTs.Name = "mTs";
-            this.mTs.Size = new System.Drawing.Size(960, 25);
-            this.mTs.TabIndex = 0;
-            this.mTs.Text = "toolStrip1";
-            // 
-            // splitContainer5
-            // 
-            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer5.Name = "splitContainer5";
-            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer5.Panel1
-            // 
-            this.splitContainer5.Panel1.Controls.Add(this.table_top);
-            this.splitContainer5.Panel1.Resize += new System.EventHandler(this.splitContainer5_Panel1_Resize);
-            this.splitContainer5.Size = new System.Drawing.Size(961, 562);
-            this.splitContainer5.SplitterDistance = 243;
-            this.splitContainer5.TabIndex = 0;
-            // 
-            // table_top
-            // 
-            this.table_top.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
-            this.table_top.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
-            this.table_top.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.table_top.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.table_top.Location = new System.Drawing.Point(0, 0);
-            this.table_top.Margin = new System.Windows.Forms.Padding(0);
-            this.table_top.Name = "table_top";
-            this.table_top.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.table_top.RowTemplate.Height = 24;
-            this.table_top.Size = new System.Drawing.Size(240, 150);
-            this.table_top.TabIndex = 0;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 73);
-            // 
             // connection_btn
             // 
             this.connection_btn.AutoSize = false;
@@ -451,6 +311,11 @@
             this.user_btn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.user_btn.Click += new System.EventHandler(this.user_btn_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 73);
+            // 
             // table_btn
             // 
             this.table_btn.AutoSize = false;
@@ -481,6 +346,76 @@
             this.view_btn.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.view_btn.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.view_btn.Click += new System.EventHandler(this.view_btn_Click);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer4);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.splitContainer3);
+            this.splitContainer2.Size = new System.Drawing.Size(1232, 591);
+            this.splitContainer2.SplitterDistance = 25;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // splitContainer4
+            // 
+            this.splitContainer4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer4.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer4.Name = "splitContainer4";
+            // 
+            // splitContainer4.Panel1
+            // 
+            this.splitContainer4.Panel1.Controls.Add(this.label1);
+            // 
+            // splitContainer4.Panel2
+            // 
+            this.splitContainer4.Panel2.Controls.Add(this.mTs);
+            this.splitContainer4.Size = new System.Drawing.Size(1232, 25);
+            this.splitContainer4.SplitterDistance = 268;
+            this.splitContainer4.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 7);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 12);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Connections";
+            // 
+            // mTs
+            // 
+            this.mTs.AllowMerge = false;
+            this.mTs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenTable,
+            this.DesignTable,
+            this.NewTable,
+            this.DeleteTable,
+            this.ImportWizard,
+            this.ExportWizard,
+            this.OpenView,
+            this.DesignView,
+            this.NewView,
+            this.DeleteView,
+            this.View_ExportWizard,
+            this.DesignFunction,
+            this.NewFunction,
+            this.DeleteFunction,
+            this.ExecuteFunction});
+            this.mTs.Location = new System.Drawing.Point(0, 0);
+            this.mTs.Name = "mTs";
+            this.mTs.Size = new System.Drawing.Size(960, 25);
+            this.mTs.TabIndex = 0;
+            this.mTs.Text = "toolStrip1";
             // 
             // OpenTable
             // 
@@ -618,6 +553,71 @@
             this.ExecuteFunction.Size = new System.Drawing.Size(122, 20);
             this.ExecuteFunction.Text = "Execute Function";
             // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer3.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.db_tree);
+            this.splitContainer3.Panel1.Resize += new System.EventHandler(this.splitContainer3_Panel1_Resize);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.splitContainer5);
+            this.splitContainer3.Size = new System.Drawing.Size(1232, 562);
+            this.splitContainer3.SplitterDistance = 267;
+            this.splitContainer3.TabIndex = 0;
+            // 
+            // db_tree
+            // 
+            this.db_tree.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.db_tree.Location = new System.Drawing.Point(0, 0);
+            this.db_tree.Name = "db_tree";
+            this.db_tree.Size = new System.Drawing.Size(121, 97);
+            this.db_tree.TabIndex = 0;
+            this.db_tree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.db_tree_AfterSelect);
+            this.db_tree.DoubleClick += new System.EventHandler(this.db_tree_DoubleClick);
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.table_top);
+            this.splitContainer5.Panel1.Resize += new System.EventHandler(this.splitContainer5_Panel1_Resize);
+            this.splitContainer5.Size = new System.Drawing.Size(961, 562);
+            this.splitContainer5.SplitterDistance = 243;
+            this.splitContainer5.TabIndex = 0;
+            // 
+            // table_top
+            // 
+            this.table_top.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.table_top.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllHeaders;
+            this.table_top.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.table_top.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.table_top.Location = new System.Drawing.Point(0, 0);
+            this.table_top.Margin = new System.Windows.Forms.Padding(0);
+            this.table_top.Name = "table_top";
+            this.table_top.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.table_top.RowTemplate.Height = 24;
+            this.table_top.Size = new System.Drawing.Size(240, 150);
+            this.table_top.TabIndex = 0;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Location = new System.Drawing.Point(0, 677);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1232, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -643,10 +643,6 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.splitContainer3.Panel1.ResumeLayout(false);
-            this.splitContainer3.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
-            this.splitContainer3.ResumeLayout(false);
             this.splitContainer4.Panel1.ResumeLayout(false);
             this.splitContainer4.Panel1.PerformLayout();
             this.splitContainer4.Panel2.ResumeLayout(false);
@@ -655,6 +651,10 @@
             this.splitContainer4.ResumeLayout(false);
             this.mTs.ResumeLayout(false);
             this.mTs.PerformLayout();
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
