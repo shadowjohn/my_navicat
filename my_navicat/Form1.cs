@@ -224,7 +224,7 @@ namespace my_navicat
             List<object> btns = new List<object>();
             btns.Add(table_btn);
             btns.Add(view_btn);
-            for(int i=0,max_i=btns.Count;i<max_i;i++)
+            for (int i = 0, max_i = btns.Count; i < max_i; i++)
             {
                 ((ToolStripButton)btns[i]).Checked = false;
                 ((ToolStripButton)btns[i]).BackColor = Form1.DefaultBackColor;
@@ -237,11 +237,11 @@ namespace my_navicat
 
                     break;
                 case "table":
-                    table_btn.BackColor = Color.LightBlue;                    
+                    table_btn.BackColor = Color.LightBlue;
                     table_btn.Checked = true;
                     break;
                 case "view":
-                    view_btn.BackColor = Color.LightBlue;                    
+                    view_btn.BackColor = Color.LightBlue;
                     view_btn.Checked = true;
                     break;
             }
@@ -332,6 +332,11 @@ namespace my_navicat
             //開啟 database
             switch (myN.connections[father_index]["kind"].ToString())
             {
+                case "postgresql":
+                    {
+
+                    }
+                    break;
                 case "mysql":
                     if (db_tree.Nodes[father_index].Nodes[index].Nodes.Count == 0)
                     {
@@ -344,7 +349,7 @@ namespace my_navicat
                             show tables from `" + databaseName + @"`
                         ";
                         //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[father_index]["pdo"]));
-                        DataTable dt = ((my_mysql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                        DataTable dt = ((my_mysql)myN.connections[father_index]["pdo"]).selectSQL_SAFE(SQL);
                         //List<MySqlParameter> PA = new List<MySqlParameter>();
                         //cmd.Parameters.AddWithValue("@table", databaseName);
                         //dt.Load(cmd.ExecuteReader());
@@ -397,8 +402,8 @@ namespace my_navicat
         private void db_tree_third_click(int father_index, int index, string databaseName, string name)
         {
             MessageBox.Show(father_index + "," + index + "," + name);
-        }       
-        public void dialogMyBoxOn(string message,bool can_close)
+        }
+        public void dialogMyBoxOn(string message, bool can_close)
         {
             /*
             var w = new Form() { Size = new Size(0, 0) };
@@ -411,9 +416,9 @@ namespace my_navicat
             dialog.MinimizeBox = false;
             dialog.AutoSize = true;
             dialog.ControlBox = false;
-            dialog.FormBorderStyle = FormBorderStyle.FixedSingle;            
+            dialog.FormBorderStyle = FormBorderStyle.FixedSingle;
             dialog.StartPosition = FormStartPosition.CenterScreen;
-            
+
             dialogLabel.Location = new Point(0, 0);
             dialogLabel.AutoSize = false;
             dialogLabel.Size = new Size(250, 80);
@@ -431,18 +436,18 @@ namespace my_navicat
         }
         private void db_tree_DoubleClick(object sender, EventArgs e)
         {
-            
-            dialogMyBoxOn("資料載入中...",false);
+
+            dialogMyBoxOn("資料載入中...", false);
             int index = ((TreeView)sender).SelectedNode.Index;
             bool is_root = true;
             //Console.WriteLine(((TreeView)sender).SelectedNode.FullPath);
             string fullPath = ((TreeView)sender).SelectedNode.FullPath;
             var m = my.explode("\\", fullPath);
-            
+
             if (m.Length == 2)
             {
                 //代表是子層
-                
+
                 db_tree_second_click(
                     ((TreeView)sender).SelectedNode.Parent.Index,
                     ((TreeView)sender).SelectedNode.Index,
@@ -485,101 +490,195 @@ namespace my_navicat
                 //連線，展開
                 switch (db["kind"].ToString().ToLower())
                 {
-                    case "mysql":
-                        myN.connections[index]["connString"] = "server=" + myN.connections[index]["ip"].ToString() + ";" +
-                            "port=" + myN.connections[index]["port"].ToString() + ";" +
-                            "user id=" + myN.connections[index]["login_id"].ToString() + ";" +
-                            "Password=" + myN.connections[index]["pwd"].ToString() + ";" +
-                            "database=;sslmode=none;charset=utf8;";                        
-                        myN.connections[index]["pdo"] = new my_mysql();
-                        //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
-                        ((my_mysql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
-                        if (((my_mysql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
+                    case "postgresql":
                         {
-                            try
+                            //Server=127.0.0.1;Port=5432;Database=myDataBase;User Id=myUsername;
+                            //Password = myPassword;
+                            myN.connections[index]["connString"] = "Server=" + myN.connections[index]["ip"].ToString() + ";" +
+                               "Port=" + myN.connections[index]["port"].ToString() + ";" +
+                               "User Id=" + myN.connections[index]["login_id"].ToString() + ";" +
+                               "Password=" + myN.connections[index]["pwd"].ToString() + ";"+
+                               "Database=postgres;";
+                            myN.connections[index]["pdo"] = new my_postgresql();
+                            //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
+                            ((my_postgresql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
+                            if (((my_postgresql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
                             {
-                                ((my_mysql)myN.connections[index]["pdo"]).open();
-                                myN.connections[index]["isConnect"] = "T";
-                                db_tree.Nodes[index].SelectedImageIndex = 1;
-                                db_tree.Nodes[index].ImageIndex = 1;
-                                //取得 databases 列表
-                                string SQL = @"
+                                try
+                                {
+                                    ((my_postgresql)myN.connections[index]["pdo"]).open();
+                                    myN.connections[index]["isConnect"] = "T";
+                                    db_tree.Nodes[index].SelectedImageIndex = 1;
+                                    db_tree.Nodes[index].ImageIndex = 1;
+                                    //取得 databases 列表
+                                    string SQL = @"
+                                        SELECT
+                                           ""datname"" AS ""Database""
+                                        FROM
+                                           ""pg_database""
+                                    ";
+                                    //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
+                                    DataTable dt = ((my_postgresql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                                    //dt.Load(cmd.ExecuteReader());
+                                    for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
+                                    {
+                                        TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
+                                        newNode.ImageIndex = 10;
+                                        newNode.SelectedImageIndex = 10;
+                                        db_tree.Nodes[index].Nodes.Add(newNode);
+                                    }
+                                    ((TreeView)sender).SelectedNode.ExpandAll();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                    myN.connections[index]["isConnect"] = "F";
+                                    //db_tree.Nodes[index].ImageIndex = 0;
+                                    //db_tree.Nodes[index].SelectedImageIndex = 0;                                
+                                    ((TreeView)sender).SelectedNode.Collapse();
+                                }
+
+                            }
+                        }
+                        break;
+                    case "sqlite":
+                        {
+                            //Console.WriteLine(myN.connections[index]["path"].ToString());
+                            myN.connections[index]["connString"] = "Data Source=" + myN.connections[index]["path"].ToString() + ";Version=3;";
+                            myN.connections[index]["pdo"] = new my_sqlite();
+                            //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
+                            ((my_sqlite)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
+                            if (((my_sqlite)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
+                            {
+                                try
+                                {
+                                    ((my_sqlite)myN.connections[index]["pdo"]).open();
+                                    myN.connections[index]["isConnect"] = "T";
+                                    db_tree.Nodes[index].SelectedImageIndex = 1;
+                                    db_tree.Nodes[index].ImageIndex = 1;
+                                    //取得 databases 列表
+                                    string SQL = @"
+                                    select 'main' AS `Database`;
+                                ";
+                                    DataTable dt = ((my_sqlite)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                                    for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
+                                    {
+                                        TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
+                                        newNode.ImageIndex = 10;
+                                        newNode.SelectedImageIndex = 10;
+                                        db_tree.Nodes[index].Nodes.Add(newNode);
+                                    }
+                                    ((TreeView)sender).SelectedNode.ExpandAll();
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                    myN.connections[index]["isConnect"] = "F";
+                                    //db_tree.Nodes[index].ImageIndex = 0;
+                                    //db_tree.Nodes[index].SelectedImageIndex = 0;                                
+                                    ((TreeView)sender).SelectedNode.Collapse();
+                                }
+
+                            }
+                        }
+                        break;
+                    case "mysql":
+                        {
+                            myN.connections[index]["connString"] = "server=" + myN.connections[index]["ip"].ToString() + ";" +
+                                "port=" + myN.connections[index]["port"].ToString() + ";" +
+                                "user id=" + myN.connections[index]["login_id"].ToString() + ";" +
+                                "Password=" + myN.connections[index]["pwd"].ToString() + ";" +
+                                "database=;sslmode=none;charset=utf8;";
+                            myN.connections[index]["pdo"] = new my_mysql();
+                            //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
+                            ((my_mysql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
+                            if (((my_mysql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
+                            {
+                                try
+                                {
+                                    ((my_mysql)myN.connections[index]["pdo"]).open();
+                                    myN.connections[index]["isConnect"] = "T";
+                                    db_tree.Nodes[index].SelectedImageIndex = 1;
+                                    db_tree.Nodes[index].ImageIndex = 1;
+                                    //取得 databases 列表
+                                    string SQL = @"
                                     show databases;
                                 ";
-                                //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
-                                DataTable dt = ((my_mysql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
-                                //dt.Load(cmd.ExecuteReader());
-                                for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
-                                {
-                                    TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
-                                    newNode.ImageIndex = 10;
-                                    newNode.SelectedImageIndex = 10;
-                                    db_tree.Nodes[index].Nodes.Add(newNode);
+                                    //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
+                                    DataTable dt = ((my_mysql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                                    //dt.Load(cmd.ExecuteReader());
+                                    for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
+                                    {
+                                        TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
+                                        newNode.ImageIndex = 10;
+                                        newNode.SelectedImageIndex = 10;
+                                        db_tree.Nodes[index].Nodes.Add(newNode);
+                                    }
+                                    ((TreeView)sender).SelectedNode.ExpandAll();
                                 }
-                                ((TreeView)sender).SelectedNode.ExpandAll();
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                                myN.connections[index]["isConnect"] = "F";
-                                //db_tree.Nodes[index].ImageIndex = 0;
-                                //db_tree.Nodes[index].SelectedImageIndex = 0;                                
-                                ((TreeView)sender).SelectedNode.Collapse();
-                            }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                    myN.connections[index]["isConnect"] = "F";
+                                    //db_tree.Nodes[index].ImageIndex = 0;
+                                    //db_tree.Nodes[index].SelectedImageIndex = 0;                                
+                                    ((TreeView)sender).SelectedNode.Collapse();
+                                }
 
+                            }
                         }
-                       
                         break;
                     case "mssql":
                     case "sqlserver":
-                        myN.connections[index]["connString"] = "Data Source=" + myN.connections[index]["ip"].ToString()+ ","+ myN.connections[index]["port"].ToString() +"; " +
-                            // + "," + myN.connections[index]["port"].ToString() + "
-                            "Integrated Security=True;" +
-                            "Initial Catalog=master;" +
-                            "User ID=" + myN.connections[index]["login_id"].ToString() + ";" +
-                            "Password=" + myN.connections[index]["pwd"].ToString() + "";
-                        Console.WriteLine(myN.connections[index]["connString"]);
-                        myN.connections[index]["pdo"] = new my_mssql();
-                        //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
-                        ((my_mssql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
-                        if (((my_mssql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
                         {
-                            try
+                            myN.connections[index]["connString"] = "Data Source=" + myN.connections[index]["ip"].ToString() + "," + myN.connections[index]["port"].ToString() + "; " +
+                                // + "," + myN.connections[index]["port"].ToString() + "
+                                "Integrated Security=True;" +
+                                "Initial Catalog=master;" +
+                                "User ID=" + myN.connections[index]["login_id"].ToString() + ";" +
+                                "Password=" + myN.connections[index]["pwd"].ToString() + "";
+                            //Console.WriteLine(myN.connections[index]["connString"]);
+                            myN.connections[index]["pdo"] = new my_mssql();
+                            //((MySqlConnection)myN.connections[index]["pdo"]).ConnectionString = myN.connections[index]["connString"].ToString();
+                            ((my_mssql)myN.connections[index]["pdo"]).setConn(myN.connections[index]["connString"].ToString());
+                            if (((my_mssql)myN.connections[index]["pdo"]).MCT.State != ConnectionState.Open)
                             {
-                                ((my_mssql)myN.connections[index]["pdo"]).open();
-                                myN.connections[index]["isConnect"] = "T";
-                                db_tree.Nodes[index].SelectedImageIndex = 1;
-                                db_tree.Nodes[index].ImageIndex = 1;
-                                //取得 databases 列表
-                                string SQL = @"
+                                try
+                                {
+                                    ((my_mssql)myN.connections[index]["pdo"]).open();
+                                    myN.connections[index]["isConnect"] = "T";
+                                    db_tree.Nodes[index].SelectedImageIndex = 1;
+                                    db_tree.Nodes[index].ImageIndex = 1;
+                                    //取得 databases 列表
+                                    string SQL = @"
                                   select [name] as [Database] from sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb')
                                 ";
-                                //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
-                                DataTable dt = ((my_mssql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
-                                //dt.Load(cmd.ExecuteReader());
-                                for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
-                                {
-                                    TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
-                                    newNode.ImageIndex = 10;
-                                    newNode.SelectedImageIndex = 10;
-                                    db_tree.Nodes[index].Nodes.Add(newNode);
+                                    //MySqlCommand cmd = new MySqlCommand(SQL, ((MySqlConnection)myN.connections[index]["pdo"]));
+                                    DataTable dt = ((my_mssql)myN.connections[index]["pdo"]).selectSQL_SAFE(SQL);
+                                    //dt.Load(cmd.ExecuteReader());
+                                    for (int i = 0, max_i = dt.Rows.Count; i < max_i; i++)
+                                    {
+                                        TreeNode newNode = new TreeNode(dt.Rows[i]["Database"].ToString(), i, i);
+                                        newNode.ImageIndex = 10;
+                                        newNode.SelectedImageIndex = 10;
+                                        db_tree.Nodes[index].Nodes.Add(newNode);
+                                    }
+                                    ((TreeView)sender).SelectedNode.ExpandAll();
                                 }
-                                ((TreeView)sender).SelectedNode.ExpandAll();
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                                myN.connections[index]["isConnect"] = "F";
-                                //db_tree.Nodes[index].ImageIndex = 0;
-                                //db_tree.Nodes[index].SelectedImageIndex = 0;                                
-                                ((TreeView)sender).SelectedNode.Collapse();
-                            }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                    myN.connections[index]["isConnect"] = "F";
+                                    //db_tree.Nodes[index].ImageIndex = 0;
+                                    //db_tree.Nodes[index].SelectedImageIndex = 0;                                
+                                    ((TreeView)sender).SelectedNode.Collapse();
+                                }
 
+                            }
                         }
-
                         break;
                 }
-                
+
             }
             dialogMyBoxOff();
         }
