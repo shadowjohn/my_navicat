@@ -183,6 +183,8 @@ namespace my_navicat
             // Assign the ImageList to the TreeView.
 
             db_tree.ShowRootLines = false;
+            db_tree.ShowLines = true;
+            
             db_tree.ShowPlusMinus = true;
             db_tree.Nodes.Clear();
             for (int i = 0, max_i = myN.connections.Count; i < max_i; i++)
@@ -278,7 +280,7 @@ namespace my_navicat
         private void UI_init()
         {
             db_tree.Width = splitContainer3.Width;
-            db_tree.Height = splitContainer3.Height;
+            db_tree.Height = splitContainer3.Height - 20;
             List<object> d = new List<object>();
             d.Add(OpenTable);
             d.Add(DesignTable);
